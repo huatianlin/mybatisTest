@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.mybatis.dao.ContractDAO">
+	<resultMap id="beanMap" type="contract" autoMapping="true">
+		<id property="id" column="id" />
+		<result property="platformId" column="platform_id" />	
+		<result property="businessCode" column="business_code" javaType="string" jdbcType="VARCHAR"/>
+		<result property="parentId" column="parent_id" />
+		<result property="auditStatus" column="audit_status" />
+		<result property="statusPaymentInvoice" column="status_payment_invoice" />
+		<result property="statusFreightInvoice" column="status_freight_invoice" />
+		<result property="supplierCode" column="supplier_code" />
+		<result property="memberId" column="member_id" />
+		<result property="supplierId" column="supplier_id" />
+		<result property="shopId" column="shop_id" />
+		<result property="fromMemberId" column="from_member_id" />
+		<result property="fromMember" column="from_member" />
+		<result property="fromBusinessCode" column="from_business_code" />
+		<result property="factoryId" column="factory_id" />
+		<result property="policyId" column="policy_id" />
+		<result property="policyCode" column="policy_code" />
+		<result property="prepayFrequency" column="prepay_frequency" />
+		<result property="guidePriceMode" column="guide_price_mode" />
+		<result property="settlePriceMode" column="settle_price_mode" />
+		<result property="teamType" column="team_type" />
+		<result property="teamId" column="team_id" />
+		<result property="reportingUnit" column="reporting_unit" />
+		<result property="breedId" column="breed_id" />
+		<result property="breedCode" column="breed_code" />		
+		<result property="ownerId" column="owner_id" />	
+		<result property="signDate" column="sign_date" />	
+		<result property="effeDate" column="effe_date" />	
+		<result property="expiDate" column="expi_date" />	
+		<result property="buyerId" column="buyer_id" />	
+		<result property="monthWeight" column="month_weight" />
+		<result property="addAttach" column="add_attach" />
+		<result property="creatorId" column="creator_id" />
+		<result property="createTime" column="create_time" />
+		<result property="updaterId" column="updater_id" />
+		<result property="lastAccess" column="last_access" />
+	</resultMap>
+
+	<select id="getById" parameterType="long" resultMap="beanMap">
+		select id, code, business_code, member from purchase_contract where id = #{id}
+	</select>
+	
+	<select id="queryByCode" parameterType="String" resultMap="beanMap">
+		select id, code, business_code, member from purchase_contract where code like concat(#{code}, '%')
+	</select>
+	
+	<select id="query" parameterType="Long" resultMap="beanMap">
+		select id, code, business_code, member from purchase_contract where creator_id = #{creatorId}
+	</select>
+</mapper>

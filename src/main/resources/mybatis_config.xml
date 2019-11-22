@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<properties resource="jdbc.properties"/>
+
+	<settings>
+		<setting name="cacheEnabled" value="true"/>
+		<!-- 层级延迟加载 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<setting name="multipleResultSetsEnabled" value="true"/>
+		<setting name="useColumnLabel" value="true"/>
+		<setting name="useGeneratedKeys" value="false"/>
+		<setting name="autoMappingBehavior" value="PARTIAL"/>
+		<setting name="defaultExecutorType" value="SIMPLE"/>
+		<setting name="defaultStatementTimeout" value="25"/>
+		<setting name="safeRowBoundsEnabled" value="false"/>
+		<setting name="mapUnderscoreToCamelCase" value="false"/>
+		<!-- <setting name="localCacheScope" value="SESSION"/> -->
+		<setting name="jdbcTypeForNull" value="OTHER"/>
+		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+	</settings>
+
+	<typeAliases>
+		<package name="com.mybatis.entity"/>
+	</typeAliases>
+	
+	<typeHandlers>
+		<!-- <typeHandler jdbcType="VARCHAR" javaType="string" handler="com.mybatis.jdbc.MyStringTypeHandler"/> -->
+		<typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.mybatis.enums.SexEnum"/>
+		<package name="com.mybatis.jdbc"/>
+	</typeHandlers>
+	
+
+	<environments default="delelopment">
+		<environment id="delelopment">
+			<transactionManager type="JDBC">
+				<property name="autoCommit" value="true"/>
+			</transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="mybatis/mapper/contract_mapper.xml"/>
+		<mapper resource="mybatis/mapper/user_mapper.xml"/>
+		<mapper resource="mybatis/mapper/role_mapper.xml"/>
+	</mappers>
+	
+	
+
+</configuration>

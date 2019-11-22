@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.mybatis.dao.UserDAO">
+	<cache/>
+	<sql id="user_test">a_user</sql>
+	<resultMap id="beanMap" type="user" autoMapping="true">
+		<id property="id" column="id" />
+		<result property="userName" column="user_name" />	
+		<result property="birthday" column="birthday" javaType="string" jdbcType="VARCHAR"/>
+		<result property="sexEnum" column="sex_enum" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result property="email" column="email" />
+		<result property="mobile" column="mobile" />
+		<result property="remark" column="remark" />
+		<result property="lastAccess" column="last_access" />
+		<result property="version" column="version" />
+		
+		<!-- <association property="role" column="id" select="com.mybatis.dao.RoleDAO.findByUserId" fetchType="lazy"/>
+		<collection property="contracts" column="id" select="com.mybatis.dao.ContractDAO.query" /> -->
+	</resultMap>
+	
+	<sql id="user_column">user_name, birthday, sex_enum, email, mobile, remark, last_access, version</sql>
+		
+	<insert id="insert" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO <include refid="user_test" />
+			(<include refid="user_column"/>)
+		VALUES
+			(#{userName}, #{birthday}, #{sexEnum, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{email}, #{mobile}, #{remark}, unix_timestamp(now())*1000, 0)
+	</insert>
+
+	<select id="findById" parameterType="long" resultMap="beanMap">
+		select id, <include refid="user_column"/> from <include refid="user_test"/> where id = #{id}
+	</select>
+	
+	<select id="queryByName" parameterType="String" resultMap="beanMap">
+		select id, <include refid="user_column"/> from <include refid="user_test"/> where user_name like concat(#{userName}, '%')
+	</select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.mybatis.dao.RoleDAO">
+	<sql id="role_test">role</sql>
+	<resultMap id="beanMap" type="role" autoMapping="true">
+		<id property="id" column="id" />
+		<result property="name" column="name" />	
+		<result property="userId" column="user_id" />
+		<result property="disabled" column="disabled" />
+		<result property="createTime" column="create_time" />
+		<result property="remark" column="remark" />
+		<result property="lastAccess" column="last_access" />
+		<result property="version" column="version" />
+		
+		<association property="user" column="user_id" select="com.mybatis.dao.UserDAO.findById" />
+	</resultMap>
+	
+	<sql id="role_column">name, user_id, disabled, create_time, remark, last_access, version</sql>
+		
+	<insert id="insert" parameterType="role" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO <include refid="role_test" />
+			(<include refid="role_column"/>)
+		VALUES
+			(#{name}, #{userId}, #{disabled}, #{createTime}, #{remark}, unix_timestamp(now())*1000, 0)
+	</insert>
+
+	<select id="findByUserId" parameterType="long" resultMap="beanMap">
+		select id, <include refid="role_column"/> from <include refid="role_test"/> where user_id = #{userId}
+	</select>
+	
+	<select id="findById" parameterType="long" resultMap="beanMap">
+		select id, <include refid="role_column"/> from <include refid="role_test"/> where id = #{id}
+	</select>
+	
+	<select id="queryByName" parameterType="String" resultMap="beanMap">
+		select id, <include refid="role_column"/> from <include refid="role_test"/> where name like concat(#{name}, '%')
+	</select>
+</mapper>
